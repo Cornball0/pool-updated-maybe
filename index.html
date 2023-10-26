@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bachelor Trip Pool Playoffs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #006400; /* Pool table green */
+            color: white; /* Text color */
+            margin: 0; /* Remove default body margin */
+            height: 100vh; /* Set the body height to full viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #header {
+            position: relative;
+            background-size: cover;
+            padding: 30px;
+            color: white;
+            flex: 1; /* Make the header take the remaining space */
+        }
+
+        #header img {
+            width: 50%; /* Adjust the width as needed */
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the image */
+        }
+
+        #title {
+            z-index: 1;
+            margin-top: 20px;
+        }
+
+        #players {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .player {
+            padding: 20px;
+            border: 2px solid white;
+            border-radius: 10px;
+            width: 150px;
+        }
+
+        #ratios {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="header">
+        <img src="https://i.imgur.com/IP37Uel.jpg" alt="Pool Table Image">
+        <div id="title">
+            <h1>Bachelor Trip Pool Playoffs</h1>
+        </div>
+    </div>
+
+    <div id="players">
+        <div class="player">
+            <h2>Cornball</h2>
+            <label for="cornballWins">Wins:</label>
+            <input type="number" id="cornballWins" value="0">
+            <br>
+            <label for="cornballLoses">Loses:</label>
+            <input type="number" id="cornballLoses" value="0">
+        </div>
+
+        <div class="player">
+            <h2>Clump</h2>
+            <label for="clumpWins">Wins:</label>
+            <input type="number" id="clumpWins" value="0">
+            <br>
+            <label for="clumpLoses">Loses:</label>
+            <input type="number" id="clumpLoses" value="0">
+        </div>
+
+        <div class="player">
+            <h2>Wepoop</h2>
+            <label for="wepoopWins">Wins:</label>
+            <input type="number" id="wepoopWins" value="0">
+            <br>
+            <label for="wepoopLoses">Loses:</label>
+            <input type="number" id="wepoopLoses" value="0">
+        </div>
+
+        <div class="player">
+            <h2>Lil Joey</h2>
+            <label for="lilJoeyWins">Wins:</label>
+            <input type="number" id="lilJoeyWins" value="0">
+            <br>
+            <label for="lilJoeyLoses">Loses:</label>
+            <input type="number" id="lilJoeyLoses" value="0">
+        </div>
+    </div>
+
+    <div id="ratios">
+        <h2>Win-Lose Ratios</h2>
+        <p>Cornball: <span id="cornballRatio">0.00</span></p>
+        <p>Clump: <span id="clumpRatio">0.00</span></p>
+        <p>Wepoop: <span id="wepoopRatio">0.00</span></p>
+        <p>Lil Joey: <span id="lilJoeyRatio">0.00</span></p>
+    </div>
+
+    <script>
+        // Function to get data from local storage
+        function getStoredData() {
+            for (let player of ['cornball', 'clump', 'wepoop', 'lilJoey']) {
+                let wins = localStorage.getItem(player + 'Wins');
+                let loses = localStorage.getItem(player + 'Loses');
+
+                if (wins !== null && loses !== null) {
+                    document.getElementById(player + 'Wins').value = wins;
+                    document.getElementById(player + 'Loses').value = loses;
+                }
+            }
+        }
+
+        // Update ratios based on input values
+        function updateRatios() {
+            updateRatio('cornball');
+            updateRatio('clump');
+            updateRatio('wepoop');
+            updateRatio('lilJoey');
+        }
+
+        // Update ratio for a specific player
+        function updateRatio(player) {
+            var wins = parseFloat(document.getElementById(player + 'Wins').value) || 0;
+            var loses = parseFloat(document.getElementById(player + 'Loses').value) || 0;
+
+            var ratio = (loses === 0) ? wins.toFixed(2) : (wins / loses).toFixed(2);
+
+            document.getElementById(player + 'Ratio').innerText = ratio;
+
+            // Store data in local storage
+            localStorage.setItem(player + 'Wins', wins);
+            localStorage.setItem(player + 'Loses', loses);
+        }
+
+        // Add event listeners to update ratios when input changes
+        document.querySelectorAll('input[type="number"]').forEach(function (input) {
+            input.addEventListener('input', updateRatios);
+        });
+
+        // Get stored data when the page loads
+        window.addEventListener('load', getStoredData);
+    </script>
+
+</body>
+
+</html>
